@@ -1,0 +1,167 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: dev
+  labels:
+    name: dev
+
+---
+
+#apiVersion: v1
+#kind: LimitRange
+#metadata:
+#  name: mem-limitlrange
+#  namespace: devnone
+#spec:
+#  limits:
+#    - default:
+#       memory: 512Mi
+#      defaultRequest:
+#        memory: 512Mi
+#      type: Container
+    
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nextstore-app
+  namespace: dev
+  labels:
+    app: nextstore
+    tier: dev
+spec:
+  selector:
+    matchLabels:
+      app: nextstore
+      dep: DOD   
+  replicas: 1
+  template:
+    metadata:
+      name: nextstore-app
+      annotations: 
+        nextstore.com/owner: "Sean Mattis"
+        nextstore.com/email: "sean.mattis@dynatrace.com"
+        nextstore.com/department: "DOD"
+      labels:
+        app: nextstore 
+        dep: DOD   
+    spec:    
+      containers:
+        - name: nextstore-app
+          image: seanmattisdocker/nextstore:oa-js-v1
+          ports:
+            - containerPort: 80
+          command: []
+          args: ["--color","yellow"]
+          resources:
+            limits:
+              cpu: 100m
+              memory: 512Mi
+            requests:
+              cpu: 100m
+              memory: 512Mi
+          envFrom:
+            - configMapRef:
+                name: ns-cm
+          volumeMounts:
+          - name: secrets
+            mountPath: /app/secrets
+            readOnly: true
+      volumes:
+      - name: secrets
+        secret:
+          secretName: secret-appsettings
+          
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: nextstore-service
+  namespace: dev
+  labels:
+    app: nextstore
+spec:
+  type: NodePort
+  ports:
+    - port: 80
+      targetPort: 80
+      nodePort: 30288
+  selector:
+      app: nextstore 
+      dep: DOD  
+
+---
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: annotations-demo
+  namespace: dev
+  annotations:
+    oneagent.dynatrace.com/inject: "false"    
+    imageregistry: "https://hub.docker.com/" 
+  labels:
+    app: tomcat
+    dep: DOD 
+spec:
+  containers:
+  - name: tomcat-app
+    image: tomcat
+    ports:
+    - containerPort: 80
+    env:
+    - name: LD_PRELOAD
+      value: /opt/dynatrace/oneagent/agent/lib64/liboneagentproc.so
+    - name: DT_NETWORK_ZONE
+      value: test
+    volumeMounts:
+    - mountPath: /opt/dynatrace/oneagent
+      name: oneagent
+  initContainers:
+    - name: install-oneagent
+      image: alpine:latest
+      command:
+      - /bin/sh
+      args:
+      - -c
+      - ARCHIVE=$(mktemp) && wget -O $ARCHIVE "$DT_API_URL/v1/deployment/installer/agent/unix/paas/latest?Api-Token=$DT_PAAS_TOKEN&$DT_ONEAGENT_OPTIONS" && unzip -o -d /opt/dynatrace/oneagent $ARCHIVE && rm -f $ARCHIVE
+      env:
+      - name: DT_API_URL
+        value: https://oqe26465.sprint.dynatracelabs.com/api
+      - name: DT_PAAS_TOKEN
+        valueFrom:
+          secretKeyRef:
+            name: dynakube
+            key: apiToken
+            optional: false
+      - name: DT_ONEAGENT_OPTIONS
+        value: flavor=musl&include=all
+      volumeMounts:
+      - mountPath: /opt/dynatrace/oneagent
+        name: oneagent
+# Make OneAgent available as a volume
+  volumes:
+  - name: oneagent
+    emptyDir: {}
+
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: tomcat-service
+  namespace: dev
+spec:
+  selector:
+    app: tomcat
+    dep: DOD
+  type: NodePort
+  ports:
+    - targetPort: 80
+      port: 80
+      nodePort: 30200

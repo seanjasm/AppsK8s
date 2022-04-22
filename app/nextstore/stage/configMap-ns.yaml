@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ns-cm
+  namespace: staging
+data:
+  ASPNETCORE_ENVIRONMENT: "STAGE"
+  APP_COLOR: "green"
+  RGB: "false"
+  DT_CUSTOM_PROP: "app=nextstore tier=frontend stage=dev"
+  DT_TAGS: "app=nextstore tier=frontend stage=dev"

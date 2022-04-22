@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ns-cm
+  namespace: dev
+data:
+  ASPNETCORE_ENVIRONMENT: "DEVELOPMENT"
+  APP_COLOR: "a68980"
+  RGB: "true"
+  DT_CUSTOM_PROP: "app=nextstore tier=frontend stage=dev"
+  DT_TAGS: "app=nextstore tier=frontend stage=dev"

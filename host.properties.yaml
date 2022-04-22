@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: dynatrace
+  
+---
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: host.properties
+  namespace: dynatrace
+  labels:
+    vendor: dynatrace
+data:
+  host.properties: |
+    --set-host-property=host_name=NoneYa
+    --set-host-property=host_name_fully_qualified=ITTECH
+    --set-host-property=Business_Unit=Support
+    --set-host-property=host_organization_01=DT
+    --set-host-property=host_os=Windows
