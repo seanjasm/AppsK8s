@@ -58,7 +58,7 @@ spec:
           valueFrom:
             secretKeyRef:
               name: mysql
-              key: MSSQL_SA_PASSWORD 
+              key: PASSWORD 
         volumeMounts:
         - name: mysqldb
           mountPath: /var/opt/mssql
