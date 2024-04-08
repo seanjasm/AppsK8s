@@ -14,7 +14,7 @@ alias kx='kubectl describe'
 kubectl create namespace dev
 kubectl create namespace stage
 
-kubectl create secret generic mssql --from-literal=SA_PASSWORD=$mssqlpw
+kubectl create secret generic mssql --from-literal=MSSQL_SA_PASSWORD=$mssqlpw
 
 kubectl apply -f app/mssql/deployment.yaml 
 
