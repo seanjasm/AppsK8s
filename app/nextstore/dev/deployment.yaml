@@ -4,6 +4,7 @@ metadata:
   name: dev
   labels:
     name: dev
+    dt.owner: label-team
 
 ---
 
@@ -31,6 +32,7 @@ metadata:
   labels:
     app: nextstore
     tier: dev
+    dt.owner: label-team
 spec:
   selector:
     matchLabels:
@@ -46,7 +48,8 @@ spec:
         nextstore.com/department: "DOD"
       labels:
         app: nextstore 
-        dep: DOD   
+        dep: DOD  
+        dt.owner: label-team
     spec:    
       containers:
         - name: nextstore-app
