@@ -33,54 +33,50 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: mssql-dep
+  name: mysql
 spec:
   replicas: 1
   selector:
      matchLabels:
-       app: mssql
+       app: mysql
   template:
     metadata:
       labels:
-        app: mssql
+        app: mysql
     spec:
       terminationGracePeriodSeconds: 30
-      hostname: mssqlinst
+      hostname: mysqlinst
       securityContext:
         fsGroup: 10001
       containers:
-      - name: mssql
-        image: mcr.microsoft.com/mssql/server:2017-latest
+      - name: mysql
+        image: mysql:8.0.36
         ports:
-        - containerPort: 1433
+        - containerPort: 3306
         env:
-        - name: MSSQL_PID
-          value: "Developer"
-        - name: ACCEPT_EULA
-          value: "Y"
-        - name: MSSQL_SA_PASSWORD
+        - name: MYSQL_ROOT_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: mssql
+              name: mysql
               key: MSSQL_SA_PASSWORD 
         volumeMounts:
-        - name: mssqldb
+        - name: mysqldb
           mountPath: /var/opt/mssql
       volumes:
-      - name: mssqldb
+      - name: mysqldb
         persistentVolumeClaim:
           claimName: task-pv-claim
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: mssql-service
+  name: mysql
 spec:
   selector:
-    app: mssql
+    app: mysql
   ports:
     - protocol: TCP
-      port: 1433
-      targetPort: 1433
+      port: 3306
+      targetPort: 3306
       nodePort: 31590
   type: NodePort
