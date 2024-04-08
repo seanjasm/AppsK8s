@@ -2,7 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: ns-cm
-  namespace: staging
+  namespace: stage
 data:
   ASPNETCORE_ENVIRONMENT: "STAGE"
   APP_COLOR: "green"
