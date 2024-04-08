@@ -1,6 +1,6 @@
 #!/bin/bash
 
-read -p "mssql-password: " mssqlpw
+read -p "mssql-password: " mysqlpw
 #read -p "msssql-user: " mssqluser
 
 alias k=kubectl
@@ -14,11 +14,11 @@ alias kx='kubectl describe'
 kubectl create namespace dev
 kubectl create namespace stage
 
-kubectl create secret generic mssql --from-literal=MSSQL_SA_PASSWORD=$mssqlpw
+kubectl create secret generic mysql --from-literal=PASSWORD=$mysqlpw
 
 kubectl apply -f app/mssql/deployment.yaml 
 
-sed -i "s/PassW/$mssqlpw/" appsettings.json
+sed -i "s/PassW/$mysqlpw/" appsettings.json
 
 
 kubectl create secret generic secret-appsettings --namespace=dev --from-file=appsettings.json
