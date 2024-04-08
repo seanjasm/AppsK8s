@@ -16,7 +16,7 @@ kubectl create namespace stage
 
 kubectl create secret generic mssql --from-literal=SA_PASSWORD=$mssqlpw
 
-kubectl apply -f app/mssql/deployment.yaml --record
+kubectl apply -f app/mssql/deployment.yaml 
 
 sed -i "s/PassW/$mssqlpw/" appsettings.json
 
