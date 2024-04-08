@@ -53,6 +53,8 @@ spec:
           image: seanmattisdocker/nextstore:oa-inline-v1
           ports:
             - containerPort: 80
+          command: []
+          args: ["--color","blue"]
           env:
           - name: "ASPNETCORE_ENVIRONMENT"
             value: Staging
