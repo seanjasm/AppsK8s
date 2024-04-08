@@ -7,5 +7,5 @@ data:
   ASPNETCORE_ENVIRONMENT: "STAGE"
   APP_COLOR: "green"
   RGB: "false"
-  DT_CUSTOM_PROP: "app=nextstore tier=frontend stage=dev"
-  DT_TAGS: "app=nextstore tier=frontend stage=dev"
+  DT_CUSTOM_PROP: "app=nextstore tier=frontend stage=sqa"
+  DT_TAGS: "app=nextstore tier=frontend stage=sqa"
