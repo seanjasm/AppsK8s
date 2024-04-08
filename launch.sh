@@ -12,7 +12,7 @@ alias kx='kubectl describe'
 
 
 kubectl create namespace dev
-kubectl create namespace staging
+kubectl create namespace stage
 
 kubectl create secret generic mssql --from-literal=SA_PASSWORD=$mssqlpw
 
@@ -23,7 +23,7 @@ sed -i "s/PassW/$mssqlpw/" appsettings.json
 
 kubectl create secret generic secret-appsettings --namespace=dev --from-file=appsettings.json
 
-kubectl create secret generic secret-appsettings --namespace=staging --from-file=appsettings.json
+kubectl create secret generic secret-appsettings --namespace=stage --from-file=appsettings.json
 
 kubectl apply -f app/nextstore/dev 
 
