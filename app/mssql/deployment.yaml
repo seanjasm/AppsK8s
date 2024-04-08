@@ -61,7 +61,7 @@ spec:
               key: PASSWORD 
         volumeMounts:
         - name: mysqldb
-          mountPath: /var/opt/mssql
+          mountPath: /var/lib/mysql
       volumes:
       - name: mysqldb
         persistentVolumeClaim:
