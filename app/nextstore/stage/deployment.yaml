@@ -46,7 +46,6 @@ spec:
         nextstore.com/owner: "Sean Mattis"
         nextstore.com/email: "sean.mattis@dynatrace.com"
         nextstore.com/department: "DOD"
-        dt.owner: annotation-team
       labels:
         app: nextstore-inline
         dep: DOD 
