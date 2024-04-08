@@ -53,7 +53,7 @@ spec:
     spec:    
       containers:
         - name: nextstore-container
-          image: seanmattisdocker/nextstore:oa-inline-v1
+          image: seanmattisdocker/nextstore:oa-js-v1
           ports:
             - containerPort: 80
           command: []
