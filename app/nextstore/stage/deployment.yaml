@@ -94,6 +94,7 @@ spec:
   ports:
     - port: 80
       targetPort: 80
+      nodePort: 30953
   selector:
       app: nextstore-inline 
       dep: DOD  
