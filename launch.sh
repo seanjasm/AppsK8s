@@ -16,7 +16,7 @@ kubectl create namespace stage
 
 kubectl create secret generic mysql --from-literal=PASSWORD=$mysqlpw
 
-kubectl apply -f app/mssql/deployment.yaml 
+kubectl apply -f app/mssql/mysqlDep.yaml 
 
 sed -i "s/PassW/$mysqlpw/" appsettings.json
 
