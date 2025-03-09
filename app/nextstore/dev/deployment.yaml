@@ -6,6 +6,62 @@ metadata:
     name: dev
     dt.owner: label-team
 
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: shopping-app
+  namespace: dev
+  labels:
+    app: shopping
+    tier: dev
+    dt.owner: label-team
+spec:
+  selector:
+    matchLabels:
+      app: shopping
+      dep: DOD   
+  replicas: 1
+  template:
+    metadata:
+      name: shopping-app
+      annotations: 
+        nextstore.com/owner: "Sean Mattis"
+        nextstore.com/email: "sean.mattis@dynatrace.com"
+        nextstore.com/department: "DOD"
+      labels:
+        app: shopping 
+        dep: DOD  
+        dt.owner: label-team
+    spec:    
+      containers:
+        - name: shopping-app
+          image: seanmattisdocker/shoppingapp:v1.0
+          ports:
+            - containerPort: 80
+          command: []
+          args: ["--color","yellow"]
+          resources:
+            limits:
+              cpu: 100m
+              memory: 512Mi
+            requests:
+              cpu: 100m
+              memory: 512Mi
+          envFrom:
+            - configMapRef:
+                name: ns-cm
+          volumeMounts:
+          - name: secrets
+            mountPath: /app/secrets
+            readOnly: true
+      volumes:
+      - name: secrets
+        secret:
+          secretName: secret-appsettings-shopping
+
 ---
 
 #apiVersion: v1
